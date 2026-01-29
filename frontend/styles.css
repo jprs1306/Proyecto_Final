@@ -1,0 +1,170 @@
+:root {
+    --primary: #00f2ff; 
+    --dark: #0a0a0a;
+    --card-bg: #1a1a1a;
+    --text: #e0e0e0;
+}
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--dark);
+    color: var(--text);
+}
+
+header {
+    background: black;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--primary);
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+}
+
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    letter-spacing: 2px;
+}
+
+main {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    border: 1px solid #333;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 5px 15px rgba(0, 242, 255, 0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #333;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.price {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+button {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--primary);
+    color: black;
+}
+
+/*Estilos del Modal (Ventana Emergente)*/
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro transparente */
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid var(--primary);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    border-radius: 8px;
+    position: relative;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var(--primary);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--primary);
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 4px;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#error-msg {
+    color: #ff4444;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
