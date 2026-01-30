@@ -39,7 +39,7 @@ async function fetchProducts() {
 // Llamar a la función al cargar la página
 fetchProducts();
 
-// --- LÓGICA DE AUTENTICACIÓN ---
+//LÓGICA DE AUTENTICACIÓN
 
 const loginBtn = document.getElementById('loginBtn');
 const modal = document.getElementById('loginModal');

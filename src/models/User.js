@@ -25,7 +25,6 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-// CORRECCIÓN AQUÍ: Quitamos 'next' y usamos solo async/await
 UserSchema.pre('save', async function() {
     // Si la contraseña no se modificó, no hacemos nada y salimos
     if (!this.isModified('password')) return;

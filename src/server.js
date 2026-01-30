@@ -15,11 +15,8 @@ connectDB();
 
 
 app.use(cors());
-// IMPORTANTE: Esta línea permite leer el "Body" de Postman. 
-// Si esto falta o está abajo de las rutas, da el error "undefined".
 app.use(express.json()); 
 
-// --- ZONA DE RUTAS (¡ESTO VA DESPUÉS!) ---
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 

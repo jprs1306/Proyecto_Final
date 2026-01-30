@@ -18,7 +18,6 @@ module.exports = (req, res, next) => {
         // Guardamos los datos del usuario en la petición para usarlos luego
         req.user = decoded; 
         
-        // 4. ¡Pase usted!
         next(); 
     } catch (error) {
         res.status(401).json({ message: 'Token no válido' });
