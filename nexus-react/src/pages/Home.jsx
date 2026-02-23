@@ -8,48 +8,94 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 1. Pedimos los productos a Render
+        // 1. Traer productos de la nube (Render)
         const prodResponse = await fetch('https://nexus-backend-api-a804.onrender.com/api/products');
         const prodData = await prodResponse.json();
-        // Usamos .products porque tu API así lo envía
-        setProducts(prodData.products || []); 
+        setProducts(prodData.products || []);
 
-        // 2. Pedimos el tipo de cambio
-        const currResponse = await fetch('https://open.er-api.com/v6/latest/USD'); 
+        // 2. Traer tipo de cambio real
+        const currResponse = await fetch('https://open.er-api.com/v6/latest/USD');
         const currData = await currResponse.json();
-        setExchangeRate(currData.rates.MXN); 
-        
+        setExchangeRate(currData.rates.MXN);
+
         setLoading(false);
       } catch (error) {
         console.error("Error cargando datos:", error);
         setLoading(false);
       }
     };
-
     fetchData();
-  }, []); // <-- Esta llave y paréntesis cierran el useEffect
+  }, []);
 
-  // Si está cargando, mostramos el mensaje
   if (loading) {
-    return <h2 style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>Cargando sistema... ⏳</h2>;
+    return <h2 style={{ color: '#00ffff', textAlign: 'center', marginTop: '100px', fontFamily: 'sans-serif' }}>Sincronizando con la base de datos... ⏳</h2>;
   }
 
-  // Aquí empieza tu diseño visual
   return (
-    <div style={{ color: 'white', padding: '20px' }}>
-      <h1>Catálogo de Productos 🎮</h1>
-      {/* Aquí va tu mapeo de productos que ya tenías */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
+    <div style={{ backgroundColor: '#000', minHeight: '100vh', padding: '20px', fontFamily: 'sans-serif' }}>
+      <h1 style={{ color: 'white', marginBottom: '30px', fontSize: '2.5rem' }}>
+        Catálogo de Productos <span role="img" aria-label="controller">🎮</span>
+      </h1>
+
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
+        gap: '25px' 
+      }}>
         {products.map((p) => (
-          <div key={p._id} style={{ border: '1px solid cyan', padding: '10px' }}>
-            <img src={p.imageUrl} alt={p.name} style={{ width: '100%' }} />
-            <h3>{p.name}</h3>
-            <p>Precio: ${(p.price * exchangeRate).toFixed(2)} MXN</p>
+          <div key={p._id} style={{ 
+            backgroundColor: '#1a1a1a', 
+            border: '2px solid #333', 
+            borderRadius: '8px',
+            padding: '15px',
+            display: 'flex',
+            flexDirection: 'column',
+            transition: 'transform 0.2s',
+            cursor: 'pointer'
+          }}>
+            {/* Contenedor de Imagen */}
+            <div style={{ width: '100%', height: '200px', backgroundColor: '#000', marginBottom: '15px', borderRadius: '4px', overflow: 'hidden' }}>
+              <img 
+                src={p.imageUrl} 
+                alt={p.name} 
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+              />
+            </div>
+
+            {/* Info del Producto */}
+            <h3 style={{ color: '#00ffff', margin: '10px 0', fontSize: '1.2rem' }}>{p.name}</h3>
+            
+            <div style={{ marginTop: 'auto' }}>
+              <p style={{ color: '#00ff00', fontSize: '1.5rem', fontWeight: 'bold', margin: '5px 0' }}>
+                ${p.price} USD
+              </p>
+              <p style={{ color: '#888', fontSize: '0.9rem', margin: '0 0 10px 0' }}>
+                Aprox. ${(p.price * exchangeRate).toFixed(2)} MXN
+              </p>
+              
+              <p style={{ color: '#fff', fontSize: '0.9rem', marginBottom: '15px' }}>
+                Stock: {p.stock}
+              </p>
+
+              <button style={{ 
+                width: '100%', 
+                padding: '12px', 
+                backgroundColor: '#00ffff', 
+                border: 'none', 
+                borderRadius: '5px', 
+                fontWeight: 'bold',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                color: '#000'
+              }}>
+                Añadir al Carrito
+              </button>
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
-}; // <-- ESTA llave es la que debe cerrar TODO al final
+};
 
 export default Home;
