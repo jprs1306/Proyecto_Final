@@ -7,6 +7,9 @@ const connectDB = require('./config/db');
 // Importar rutas
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
+const currencyRoutes = require('./routes/currencyRoutes');
+const { errorHandler } = require('./middleware/errorMiddleware');
+
 
 dotenv.config();
 const app = express();
@@ -19,6 +22,9 @@ app.use(express.json());
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/currency', currencyRoutes);
+app.use(errorHandler);
+
 
 // Ruta de prueba
 app.get('/', (req, res) => {

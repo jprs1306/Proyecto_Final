@@ -2,14 +2,16 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
-// 1. Importar el middleware
-const auth = require('../middleware/authMiddleware');
 
-// Rutas Públicas (Cualquiera puede ver)
+// Importamos a los dos guardias
+const auth = require('../middleware/authMiddleware'); // Verifica que tengas cuenta
+const admin = require('../middleware/adminMiddleware'); // Verifica que seas el jefe
+
+// Ruta PÚBLICA (Todos pueden ver los productos)
 router.get('/', productController.getProducts);
 
-// Rutas Privadas (Necesitas Token para pasar)
-// 2. Agregamos 'auth' como segundo argumento
-router.post('/', auth, productController.createProduct);
+// Ruta PRIVADA y de ADMIN (Solo Admins pueden crear)
+// Fíjate cómo ponemos "auth" y luego "admin" antes del controlador
+router.post('/', auth, admin, productController.createProduct);
 
 module.exports = router;

@@ -19,21 +19,26 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // NUEVO: Agregamos el rol del usuario
+    role: {
+        type: String,
+        enum: ['user', 'admin'], 
+        default: 'user' // Por defecto, todos los que se registran son usuarios normales
+    },
     createdAt: {
         type: Date,
         default: Date.now
     }
 });
 
+// Encriptar contraseña antes de guardar (quitamos el 'next' que te daba error antes)
 UserSchema.pre('save', async function() {
-    // Si la contraseña no se modificó, no hacemos nada y salimos
     if (!this.isModified('password')) return;
-    
-    // Encriptamos la contraseña
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
 });
 
+// Comparar contraseñas
 UserSchema.methods.comparePassword = async function(candidatePassword) {
     return await bcrypt.compare(candidatePassword, this.password);
 };

@@ -1,60 +1,70 @@
 // src/controllers/authController.js
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 
-// Función para crear el Token (la llave digital)
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '30d'
-    });
-};
-
-// REGISTRAR USUARIO
+// Controlador para Registrar
 exports.register = async (req, res) => {
-    const { username, email, password } = req.body;
-
     try {
-        // Verificar si el usuario ya existe
+        const { username, email, password } = req.body;
+        
         let user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({ message: 'El usuario ya existe' });
         }
 
-        // Crear nuevo usuario
         user = new User({ username, email, password });
         await user.save();
 
-        // Responder con el token
-        res.status(201).json({
-            _id: user._id,
-            username: user.username,
-            email: user.email,
-            token: generateToken(user._id)
+        // IMPORTANTE: Aquí metemos el rol dentro del token
+        const token = jwt.sign(
+            { id: user._id, role: user.role }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '1h' }
+        );
+
+        res.status(201).json({ 
+            _id: user._id, 
+            username: user.username, 
+            email: user.email, 
+            role: user.role,
+            token 
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(500).json({ message: 'Error en el servidor al registrar' });
     }
 };
 
-// LOGIN (INICIAR SESIÓN)
+// Controlador para Iniciar Sesión
 exports.login = async (req, res) => {
-    const { email, password } = req.body;
-
     try {
+        const { email, password } = req.body;
+
         const user = await User.findOne({ email });
-        
-        if (user && (await user.comparePassword(password))) {
-            res.json({
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-                token: generateToken(user._id)
-            });
-        } else {
-            res.status(401).json({ message: 'Credenciales inválidas' });
+        if (!user) {
+            return res.status(400).json({ message: 'Credenciales inválidas' });
         }
+
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Credenciales inválidas' });
+        }
+
+        const token = jwt.sign(
+            { id: user._id, role: user.role }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '1h' }
+        );
+
+        res.json({ 
+            _id: user._id, 
+            username: user.username, 
+            email: user.email,
+            role: user.role,
+            token 
+        });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(500).json({ message: 'Error en el servidor al iniciar sesión' });
     }
 };
