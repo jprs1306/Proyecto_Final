@@ -13,7 +13,7 @@ const Login = () => {
 
     try {
       // 1. Le tocamos la puerta a tu Backend
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+    const response = await fetch('https://nexus-backend-api-a804.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

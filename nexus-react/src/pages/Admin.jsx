@@ -26,7 +26,7 @@ const Admin = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products');
+     const response = await fetch('https://nexus-backend-api-a804.onrender.com/api/products');
       const data = await response.json();
       setProducts(data.products);
     } catch (error) {
@@ -39,7 +39,7 @@ const Admin = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch('https://nexus-backend-api-a804.onrender.com/api/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

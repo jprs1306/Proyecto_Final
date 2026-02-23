@@ -6,7 +6,6 @@ const errorHandler = (err, req, res, next) => {
     
     res.status(statusCode).json({
         message: err.message,
-        // Solo mostramos la ruta completa del error si estamos en nuestra PC (desarrollo)
         stack: process.env.NODE_ENV === 'production' ? null : err.stack,
     });
 };

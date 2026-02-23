@@ -19,7 +19,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // NUEVO: Agregamos el rol del usuario
     role: {
         type: String,
         enum: ['user', 'admin'], 
@@ -31,7 +30,7 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-// Encriptar contraseña antes de guardar (quitamos el 'next' que te daba error antes)
+// Encriptar contraseña antes de guardar
 UserSchema.pre('save', async function() {
     if (!this.isModified('password')) return;
     const salt = await bcrypt.genSalt(10);

@@ -15,7 +15,6 @@ exports.register = async (req, res) => {
         user = new User({ username, email, password });
         await user.save();
 
-        // IMPORTANTE: Aquí metemos el rol dentro del token
         const token = jwt.sign(
             { id: user._id, role: user.role }, 
             process.env.JWT_SECRET, 
